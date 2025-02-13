@@ -69,12 +69,6 @@ namespace epay3.Web.Api.Sdk.V2.Client
         }
 
         /// <summary>
-        /// Gets or sets the default API client for making HTTP calls.
-        /// </summary>
-        [Obsolete("ApiClient.Default is deprecated, please use 'Configuration.Default.ApiClient' instead.")]
-        public static ApiClient Default;
-
-        /// <summary>
         /// Gets or sets the Configuration.
         /// </summary>
         public Configuration Configuration { get; set; }
