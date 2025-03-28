@@ -32,103 +32,128 @@ namespace epay3.Web.Api.V2.Tests.Processor7
             _transactionsApi.Configuration.AddDefaultHeader("Authorization", "Basic " + Convert.ToBase64String(plainTextBytes));
         }
 
-        // [TestMethod]
-        // public void Should_Successfully_Process_And_Void_Credit_Card()
-        // {
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         CreditCardInformation = _testData.Mastercard,
-        //         AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
-        //         Comments = "Sample comments",
-        //         PayerFee = amount * .10
-        //     };
+        [TestMethod]
+        public void Should_Successfully_Process_And_Void_Credit_Card()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                CreditCardInformation = _testData.Mastercard,
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
+                SubTotal = 100,
+            };
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-        //     // Should return a valid Id.
-        //     Assert.IsTrue(response.Id > 0);
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
 
-        //     // Should successfully void a transaction.
-        //     Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
+            // Should successfully void a transaction.
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
 
-        //     var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
-        //     Assert.IsNotNull(getTransactionResponseModel);
-        //     Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
-        //     Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
-        //     Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
+            Assert.IsNotNull(getTransactionResponseModel);
+            Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
-        //     // Should not be able to void the transaction more than once.
-        //     Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
-        // }
+            // Should not be able to void the transaction more than once.
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
+        }
 
-        // [TestMethod]
-        // public void Should_Successfully_Process_And_Void_Ach()
-        // {
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = Math.Round(new Random().NextDouble() * 100, 2),
-        //         BankAccountInformation = _testData.Ach2,
-        //         AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
-        //         Comments = "Sample comments"
-        //     };
+        [TestMethod]
+        public void Should_Successfully_Process_And_Void_Ach()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                BankAccountInformation = _testData.Ach2,
+                AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
+                Comments = "Sample comments"
+            };
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-        //     // Should return a valid Id.
-        //     Assert.IsTrue(response.Id > 0);
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
 
-        //     // Should successfully void a transaction.
-        //     Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
+            // Should successfully void a transaction.
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
 
-        //     var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
 
-        //     Assert.IsNotNull(getTransactionResponseModel);
-        //     Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
-        //     Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
-        //     Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
+            Assert.IsNotNull(getTransactionResponseModel);
+            Assert.AreEqual("512-234-1233", getTransactionResponseModel.AttributeValues.Single(x => x.ParameterName == "phoneNumber").Value);
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Void));
 
-        //     // Should not be able to void the transaction more than once.
-        //     Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
-        // }
+            // Should not be able to void the transaction more than once.
+            Assert.AreEqual(ReversalResponseCode.PreviouslyVoided, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }).ReversalResponseCode);
+        }
 
-        // [TestMethod]
-        // public void Should_Honor_Impersonation_For_Transactions()
-        // {
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         BankAccountInformation = _testData.Ach2,
-        //         Comments = "Sample comments",
-        //         InitiatingPartyFee = amount * .20
-        //     };
+        [TestMethod]
+        public void Should_Honor_Impersonation_For_Transactions()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                BankAccountInformation = _testData.Ach2,
+                Comments = "Sample comments",
+                InitiatingPartyFee = 100 * .20
+            };
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
 
-        //     // Should return a valid Id.
-        //     Assert.IsTrue(response.Id > 0);
-        //     Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
 
-        //     // Should get the transaction even when impersonation is off.
-        //     Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
-        //     // Should get the transaction when impersonation is on.
-        //     Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey));
+            // Should get the transaction even when impersonation is off.
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, null));
+            // Should get the transaction when impersonation is on.
+            Assert.IsNotNull(_transactionsApi.TransactionsGet(response.Id, _testData.ImpersonationAccountKey));
 
-        //     // Should not be able to void with the impersonation key.
-        //     Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, null));
+            // Should not be able to void with the impersonation key.
+            Assert.AreNotEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, null));
 
-        //     // Should be able to void with the impersonation key.
-        //     Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, _testData.ImpersonationAccountKey).ReversalResponseCode);
-        // }
+            // Should be able to void with the impersonation key.
+            Assert.AreEqual(ReversalResponseCode.Success, _transactionsApi.TransactionsVoid(response.Id.Value, new PostVoidTransactionRequestModel { SendReceipt = false }, _testData.ImpersonationAccountKey).ReversalResponseCode);
+        }
+
+        /// <summary>
+        /// This is just an example showing how to refund a transaction. Refunds are not allowed until
+        /// the transaction is settled and batched.
+        /// </summary>
+        [TestMethod]
+        [Ignore]
+        public void Should_Successfully_Issue_Full_Refund()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith222222",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                BankAccountInformation = _testData.Ach2,
+                Comments = "Sample comments"
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+
+            var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false });
+            var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, postTransactionRequestModel.SubTotal + 3);
+        }
 
         /// <summary>
         /// This is just an example showing how to refund a transaction. Refunds are not allowed until
@@ -136,198 +161,166 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         /// </summary>
         // [TestMethod]
         // [Ignore]
-        // public void Should_Successfully_Issue_Full_Refund()
-        // {
-        //     var amount = new Random().Next(10, 1000);
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         BankAccountInformation = _testData.Ach2,
-        //         Comments = "Sample comments"
-        //     };
+        public void Should_Successfully_Issue_Partial_Refunds()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                BankAccountInformation = _testData.Ach2,
+                Comments = "Sample comments"
+            };
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
 
-        //     // Should return a valid Id.
-        //     Assert.IsTrue(response.Id > 0);
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
 
-        //     var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false });
-        //     var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+            var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 5 });
+            var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
 
-        //     Assert.IsNotNull(refundTransaction);
-        //     Assert.AreEqual(refundTransaction.Amount * -1, postTransactionRequestModel.Amount + 3);
-        // }
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, 5);
 
-        /// <summary>
-        /// This is just an example showing how to refund a transaction. Refunds are not allowed until
-        /// the transaction is settled and batched.
-        /// </summary>
-        // [TestMethod]
-        // [Ignore]
-        // public void Should_Successfully_Issue_Partial_Refunds()
-        // {
-        //     var amount = new Random().Next(100, 1000);
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         BankAccountInformation = _testData.Ach2,
-        //         Comments = "Sample comments"
-        //     };
+            refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 6 });
+            refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel);
+            Assert.IsNotNull(refundTransaction);
+            Assert.AreEqual(refundTransaction.Amount * -1, 6);
 
-        //     // Should return a valid Id.
-        //     Assert.IsTrue(response.Id > 0);
+            refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = (double)postTransactionRequestModel.SubTotal });
 
-        //     var refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 5 });
-        //     var refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+            Assert.AreEqual(ReversalResponseCode.GenericDecline, refundResponse.ReversalResponseCode);
+            Assert.IsNull(refundResponse.Id);
+        }
 
-        //     Assert.IsNotNull(refundTransaction);
-        //     Assert.AreEqual(refundTransaction.Amount * -1, 5);
+        [TestMethod]
+        public void Should_Fail_With_Invalid_Authorization_Id()
+        {
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                AuthorizationId = "INVALID_ID"
+            };
 
-        //     refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = 6 });
-        //     refundTransaction = _transactionsApi.TransactionsGet(refundResponse.Id);
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-        //     Assert.IsNotNull(refundTransaction);
-        //     Assert.AreEqual(refundTransaction.Amount * -1, 6);
+            Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, response.PaymentResponseCode);
+        }
 
-        //     refundResponse = _transactionsApi.TransactionsRefund(response.Id.Value, new PostRefundTransactionRequestModel { SendReceipt = false, Amount = postTransactionRequestModel.Amount });
+        [TestMethod]
+        public void Should_Successfully_Use_Authorization_Id()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = _testData.Mastercard
+            };
 
-        //     Assert.AreEqual(ReversalResponseCode.GenericDecline, refundResponse.ReversalResponseCode);
-        //     Assert.IsNull(refundResponse.Id);
-        // }
+            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
 
-        // [TestMethod]
-        // public void Should_Fail_With_Invalid_Authorization_Id()
-        // {
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         AuthorizationId = "INVALID_ID"
-        //     };
+            var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+            {
+                Amount = amount,
+                TokenId = tokenId
+            });
 
-        //     var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+            Assert.IsNotNull(authorizationId);
 
-        //     Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, response.PaymentResponseCode);
-        // }
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                AuthorizationId = authorizationId
+            };
 
-        // [TestMethod]
-        // public void Should_Successfully_Use_Authorization_Id()
-        // {
-        //     var postTokenRequestModel = new PostTokenRequestModel
-        //     {
-        //         Payer = "John Doe",
-        //         EmailAddress = "jdoe@example.com",
-        //         CreditCardInformation = _testData.Mastercard
-        //     };
+            var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
 
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+            Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
+        }
 
-        //     var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
-        //     {
-        //         Amount = amount,
-        //         TokenId = tokenId
-        //     });
+        [TestMethod]
+        public void Should_Not_Successfully_Authorization_With_Ach_Token()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                BankAccountInformation = new BankAccountInformationModel
+                {
+                    AccountHolder = "John Doe",
+                    AccountNumber = "1234567890",
+                    RoutingNumber = "111000025",
+                    AccountType = AccountType.Corporatesavings
+                }
+            };
 
-        //     Assert.IsNotNull(authorizationId);
+            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
 
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         AuthorizationId = authorizationId
-        //     };
+            try
+            {
+                var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+                {
+                    Amount = amount,
+                    TokenId = tokenId
+                });
 
-        //     var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+                Assert.Fail();
+            }
+            catch (ApiException)
+            {
+            }
+            catch
+            {
+                Assert.Fail();
+            }
+        }
 
-        //     Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
-        // }
+        [TestMethod]
+        public void Should_Successfully_Use_Authorization_Id_With_Impersonation()
+        {
+            var postTokenRequestModel = new PostTokenRequestModel
+            {
+                Payer = "John Doe",
+                EmailAddress = "jdoe@example.com",
+                CreditCardInformation = _testData.Mastercard
+            };
 
-        // [TestMethod]
-        // public void Should_Not_Successfully_Authorization_With_Ach_Token()
-        // {
-        //     var postTokenRequestModel = new PostTokenRequestModel
-        //     {
-        //         Payer = "John Doe",
-        //         EmailAddress = "jdoe@example.com",
-        //         BankAccountInformation = new BankAccountInformationModel
-        //         {
-        //             AccountHolder = "John Doe",
-        //             AccountNumber = "1234567890",
-        //             RoutingNumber = "111000025",
-        //             AccountType = AccountType.Corporatesavings
-        //         }
-        //     };
+            var amount = Math.Round(new Random().NextDouble() * 100, 2);
+            var tokenId = _tokensApi.TokensPost(postTokenRequestModel, _testData.ImpersonationAccountKey);
 
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var tokenId = _tokensApi.TokensPost(postTokenRequestModel);
+            var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
+            {
+                Amount = amount,
+                TokenId = tokenId
+            }, _testData.ImpersonationAccountKey);
 
-        //     try
-        //     {
-        //         var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
-        //         {
-        //             Amount = amount,
-        //             TokenId = tokenId
-        //         });
+            Assert.IsNotNull(authorizationId, _testData.ImpersonationAccountKey);
 
-        //         Assert.Fail();
-        //     }
-        //     catch (ApiException)
-        //     {
-        //     }
-        //     catch
-        //     {
-        //         Assert.Fail();
-        //     }
-        // }
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = 100,
+                AuthorizationId = authorizationId
+            };
 
-        // [TestMethod]
-        // public void Should_Successfully_Use_Authorization_Id_With_Impersonation()
-        // {
-        //     var postTokenRequestModel = new PostTokenRequestModel
-        //     {
-        //         Payer = "John Doe",
-        //         EmailAddress = "jdoe@example.com",
-        //         CreditCardInformation = _testData.Mastercard
-        //     };
+            // This attempt should fail without the same impersonation key.
+            var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel);
 
-        //     var amount = Math.Round(new Random().NextDouble() * 100, 2);
-        //     var tokenId = _tokensApi.TokensPost(postTokenRequestModel, _testData.ImpersonationAccountKey);
+            Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, transactionResponse.PaymentResponseCode);
 
-        //     var authorizationId = _transactionsApi.TransactionsAuthorize(new PostAuthorizeTransactionRequestModel
-        //     {
-        //         Amount = amount,
-        //         TokenId = tokenId
-        //     }, _testData.ImpersonationAccountKey);
+            // This attempt should succeed with the the correct impersonation key.
+            transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
 
-        //     Assert.IsNotNull(authorizationId, _testData.ImpersonationAccountKey);
-
-        //     var postTransactionRequestModel = new PostTransactionRequestModel
-        //     {
-        //         Payer = "John Smith",
-        //         EmailAddress = "jsmith@example.com",
-        //         Amount = amount,
-        //         AuthorizationId = authorizationId
-        //     };
-
-        //     // This attempt should fail without the same impersonation key.
-        //     var transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel);
-
-        //     Assert.AreEqual(PaymentResponseCode.InvalidAuthorization, transactionResponse.PaymentResponseCode);
-
-        //     // This attempt should succeed with the the correct impersonation key.
-        //     transactionResponse = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
-
-        //     Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
-        // }
+            Assert.AreEqual(PaymentResponseCode.Success, transactionResponse.PaymentResponseCode);
+        }
     }
 }

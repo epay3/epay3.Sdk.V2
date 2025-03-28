@@ -23,8 +23,8 @@ namespace epay3.Web.Api.V2.Tests.TestData
             AccountHolder = "John Smith",
             FirstName = "John",
             LastName = "Smith",
-            AccountNumber = "5454545454545454",
-            RoutingNumber = "111000025",
+            AccountNumber = "12345",
+            RoutingNumber = "021000021",
             AccountType = AccountType.Personalsavings
         };
 
@@ -41,10 +41,10 @@ namespace epay3.Web.Api.V2.Tests.TestData
         public CreditCardInformationModel Mastercard => new CreditCardInformationModel
         {
             AccountHolder = "John Doe",
-            CardNumber = "5454545454545454",
-            Cvc = "999",
-            Month = 12,
-            Year = DateTime.Now.Year + 1,
+            CardNumber = "5555341244441115",
+            Cvc = "737",
+            Month = 03,
+            Year = 2030,
             PostalCode = "54321"
         };
 

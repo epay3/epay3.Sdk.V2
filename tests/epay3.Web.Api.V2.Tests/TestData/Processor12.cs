@@ -44,10 +44,10 @@ namespace epay3.Web.Api.V2.Tests.TestData
         public CreditCardInformationModel Amex => new CreditCardInformationModel()
         {
             AccountHolder = "John Doe",
-            CardNumber = "341111599241000",
-            Month = 12,
-            Year = DateTime.Now.Year + 1,
-            Cvc = "9395",
+            CardNumber = "4444333322221111",
+            Month = 03,
+            Year = 2030,
+            Cvc = "737",
             PostalCode = "54321"
         };
 
