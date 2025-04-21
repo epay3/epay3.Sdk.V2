@@ -1,8 +1,10 @@
 ﻿using epay3.Web.Api.Sdk.V2.Api;
+using epay3.Web.Api.Sdk.V2.Models;
 using epay3.Web.Api.V2.Tests.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Net;
+using System.Transactions;
 
 namespace epay3.Web.Api.V2.Tests
 {
@@ -60,6 +62,24 @@ namespace epay3.Web.Api.V2.Tests
             Assert.IsTrue(result.Batches.Count > 0);
             Assert.IsTrue(result.TotalRecords > 0);
             Assert.IsTrue(result.Batches.Any(x => x.Id == _testData.ImpersonationOnlyBatchId));
+        }
+
+        [TestMethod]
+        public void Should_Get_Batch_Transactions_Successfully_With_Impersonation_Key()
+        {
+            var result = _batchesApi.GetBatchTransactions( 6176, _testData.ImpersonationAccountKey);
+
+            // Should get successfully.
+            Assert.AreEqual(1, result.Transactions.Count);
+        }
+
+        [TestMethod]
+        public void Should_Get_Batch_Transactions_Successfully_Without_Impersonation_Key()
+        {
+            var result = _batchesApi.GetBatchTransactions(184, null);
+
+            // Should get successfully.
+            Assert.AreEqual(1, result.Transactions.Count);
         }
     }
 }

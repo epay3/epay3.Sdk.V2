@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace epay3.Web.Api.Sdk.V2.Models
 {
@@ -301,5 +302,153 @@ namespace epay3.Web.Api.Sdk.V2.Models
 
         [EnumMember(Value = "CAD")]
         CAD = 2
+    }
+
+    public enum InsuredCustomerType
+    {
+        [Display(Name = "Commercial")]
+        Commercial,
+        [Display(Name = "Personal")]
+        Personal,
+        [Display(Name = "Other")]
+        Other
+    }
+
+    public enum Country
+    {
+        [Display(Name = "United States")]
+        UnitedStates = 1,
+        [Display(Name = "Canada")]
+        Canada = 2,
+        [Display(Name = "Mexico")]
+        Mexico = 3
+    }
+    
+    public enum State
+    {
+        [Display(Name = "AL")]
+        AL,
+        [Display(Name = "AK")]
+        AK,
+        [Display(Name = "AZ")]
+        AZ,
+        [Display(Name = "AR")]
+        AR,
+        [Display(Name = "CA")]
+        CA,
+        [Display(Name = "CO")]
+        CO,
+        [Display(Name = "CT")]
+        CT,
+        [Display(Name = "DC")]
+        DC,
+        [Display(Name = "DE")]
+        DE,
+        [Display(Name = "FL")]
+        FL,
+        [Display(Name = "GA")]
+        GA,
+        [Display(Name = "HI")]
+        HI,
+        [Display(Name = "ID")]
+        ID,
+        [Display(Name = "IL")]
+        IL,
+        [Display(Name = "IN")]
+        IN,
+        [Display(Name = "IA")]
+        IA,
+        [Display(Name = "KS")]
+        KS,
+        [Display(Name = "KY")]
+        KY,
+        [Display(Name = "LA")]
+        LA,
+        [Display(Name = "ME")]
+        ME,
+        [Display(Name = "MD")]
+        MD,
+        [Display(Name = "MA")]
+        MA,
+        [Display(Name = "MI")]
+        MI,
+        [Display(Name = "MN")]
+        MN,
+        [Display(Name = "MS")]
+        MS,
+        [Display(Name = "MO")]
+        MO,
+        [Display(Name = "MT")]
+        MT,
+        [Display(Name = "NE")]
+        NE,
+        [Display(Name = "NV")]
+        NV,
+        [Display(Name = "NH")]
+        NH,
+        [Display(Name = "NJ")]
+        NJ,
+        [Display(Name = "NM")]
+        NM,
+        [Display(Name = "NY")]
+        NY,
+        [Display(Name = "NC")]
+        NC,
+        [Display(Name = "ND")]
+        ND,
+        [Display(Name = "OH")]
+        OH,
+        [Display(Name = "OK")]
+        OK,
+        [Display(Name = "OR")]
+        OR,
+        [Display(Name = "PA")]
+        PA,
+        [Display(Name = "RI")]
+        RI,
+        [Display(Name = "SC")]
+        SC,
+        [Display(Name = "SD")]
+        SD,
+        [Display(Name = "TN")]
+        TN,
+        [Display(Name = "TX")]
+        TX,
+        [Display(Name = "UT")]
+        UT,
+        [Display(Name = "VT")]
+        VT,
+        [Display(Name = "VA")]
+        VA,
+        [Display(Name = "WA")]
+        WA,
+        [Display(Name = "WV")]
+        WV,
+        [Display(Name = "WI")]
+        WI,
+        [Display(Name = "WY")]
+        WY,
+    }
+
+        public enum ManagedInvoiceSearchStatusType
+    {
+        [Display(Name = "Open")]
+        Open,
+
+        [Display(Name = "Paid")]
+        Paid,
+
+        [Display(Name = "Void")]
+        Void,
+
+        [Display(Name = "All")]
+        All,
+    }
+
+    public enum VoidManagedInvoiceResponseCode
+    {
+        Success,
+        PreviouslyVoided,
+        PreviouslyCompleted,
     }
 }

@@ -1,30 +1,35 @@
-using epay3.Web.Api.Sdk.V2.Client;
-using epay3.Web.Api.Sdk.V2.Models;
-using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RestSharp;
+using epay3.Web.Api.Sdk.V2.Client;
+using epay3.Web.Api.Sdk.V2.Models;
 
 namespace epay3.Web.Api.Sdk.V2.Api
 {
-    public interface ITransactionsApi
+
+    /// <summary>
+    /// Represents a collection of functions to interact with the API endpoints
+    /// </summary>
+    public interface IManagedInvoicesApi
     {
-        GetTransactionResponseModel TransactionsGet(long? id, string impersonationAccountKey = null);
-
-        PostTransactionResponseModel TransactionsPost (PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null);
-
-        PostVoidTransactionResponseModel TransactionsVoid(long id, PostVoidTransactionRequestModel postVoidTransactionRequestModel, string impersonationAccountKey = null);
-
-        PostRefundTransactionResponseModel TransactionsRefund(long id, PostRefundTransactionRequestModel postRefundTransactionRequestModel, string impersonationAccountKey = null);
-
-        GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, long? batchId = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null);
-
-        string TransactionsAuthorize(PostAuthorizeTransactionRequestModel postAuthorizeTransactionRequestModel, string impersonationAccountKey = null);
+        GetManagedInvoiceResponseModel ManagedInvoicesGet(string id, string impersonationAccountKey = null);
+        GetManagedInvoicesResponseModel ManagedInvoicesSearch(string payerName = null, string createdBy = null, DateTime? dueDateFrom = null, DateTime? dueDateTo = null, ManagedInvoiceSearchStatusType managedInvoiceSearchStatusType = ManagedInvoiceSearchStatusType.Open, short? page = null, byte? pageSize = null, string impersonationAccountKey = null);
+        PostVoidManagedInvoiceResponseModel ManagedInvoicesVoid(string id, string impersonationAccountKey = null);
+        string ManagedInvoicesPost(PostCreateManagedInvoicesRequestModel postCreateManagedInvoicesRequestModel, string impersonationAccountKey = null);
+        string FinanceManagedInvoices(string id, PostCreateManagedInvoicesFinanceRequestModel postCreateManagedInvoicesFinanceRequestModel, string impersonationAccountKey = null);
     }
 
-    public class TransactionsApi : ITransactionsApi
+    /// <summary>
+    /// Represents a collection of functions to interact with the API endpoints
+    /// </summary>
+    public class ManagedInvoicesApi : IManagedInvoicesApi
     {
-        public TransactionsApi(String basePath)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedInvoicesApi"/> class.
+        /// </summary>
+        /// <returns></returns>
+        public ManagedInvoicesApi(String basePath)
         {
             this.Configuration = new Configuration(new ApiClient(basePath));
 
@@ -34,11 +39,17 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 this.Configuration.ApiClient.Configuration = this.Configuration;
             }
         }
-    
-        public TransactionsApi(Configuration configuration = null)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManagedInvoicesApi"/> class
+        /// using Configuration object
+        /// </summary>
+        /// <param name="configuration">An instance of Configuration</param>
+        /// <returns></returns>
+        public ManagedInvoicesApi(Configuration configuration = null)
         {
             if (configuration == null) // use the default one in Configuration
-                this.Configuration = Configuration.Default; 
+                this.Configuration = Configuration.Default;
             else
                 this.Configuration = configuration;
 
@@ -48,16 +59,35 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 this.Configuration.ApiClient.Configuration = this.Configuration;
             }
         }
-    
-        public Configuration Configuration {get; set;}
 
-        public GetTransactionResponseModel TransactionsGet(long? id, string impersonationAccountKey = null)
+        /// <summary>
+        /// Gets the base path of the API client.
+        /// </summary>
+        /// <value>The base path</value>
+        public String GetBasePath()
         {
+            return this.Configuration.ApiClient.RestClient.Options.BaseUrl.ToString();
+        }
+
+        /// <summary>
+        /// Gets or sets the configuration object
+        /// </summary>
+        /// <value>An instance of the Configuration</value>
+        public Configuration Configuration { get; set; }
+
+        /// <summary>
+        /// Retrieves the details of a managed invoice.
+        /// </summary>
+        /// <param name="id">The unique identifier of the managed invoice.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the managed is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns>The details of the managed invoice.</returns>
+        public GetManagedInvoiceResponseModel ManagedInvoicesGet(string id, string impersonationAccountKey = null)
+        { 
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsGet");
+                throw new ApiException(400, "Missing required parameter 'id' when calling ManagedInvoicesApi->ManagedInvoicesGet");
 
-            var localVarPath = "/api/v2/transactions/{id}";
+            var localVarPath = "/api/v2/managedInvoices/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -95,97 +125,36 @@ namespace epay3.Web.Api.Sdk.V2.Api
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (localVarStatusCode >= 400)
-                throw new ApiException(localVarStatusCode, "Error calling TransactionsGet: " + localVarResponse.Content, localVarResponse.Content);
+                throw new ApiException(localVarStatusCode, "Error calling ManagedInvoicesGet: " + localVarResponse.Content, localVarResponse.Content);
             else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, "Error calling TransactionsGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+                throw new ApiException(localVarStatusCode, "Error calling ManagedInvoicesGet: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
             var headerDict = localVarResponse.Headers.GroupBy(x => x.Name).ToDictionary(g => g.Key, g => string.Join(", ", g.Select(x => x.Value?.ToString())));
 
-            var response = new ApiResponse<GetTransactionResponseModel>(
+            var response = new ApiResponse<GetManagedInvoiceResponseModel>(
                 localVarStatusCode,
                 headerDict,
-                (GetTransactionResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTransactionResponseModel))
+                (GetManagedInvoiceResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetManagedInvoiceResponseModel))
             );
-
 
             return response.Data;
         }
 
-        public PostTransactionResponseModel TransactionsPost(PostTransactionRequestModel postTransactionRequestModel, string impersonationAccountKey = null)
+        /// <summary>
+        /// Retrieves a list of Managed invoices based on search parameters.
+        /// </summary>
+        /// <param name="payerName">When filtering by the payer's name, the name or partial name to match.</param>
+        /// <param name="createdBy">When filtering by the creator's name, the name or partial name to match.</param>
+        /// <param name="dueDateFrom">When filtering by due date, the earliest permitted date. Default is null.</param>
+        /// <param name="dueDateTo">When filtering by due date, the latest permitted date. Default is null.</param>
+        /// <param name="managedInvoiceSearchStatusType">The type of managed invoice status search to perform. Default is open.</param>
+        /// <param name="page">The page of results to return. Default is 1.</param>
+        /// <param name="pageSize">The size of each page. Default is 25, Maximum is 50.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the managed invoice is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns></returns>
+        public GetManagedInvoicesResponseModel ManagedInvoicesSearch(string payerName = null, string createdBy = null, DateTime? dueDateFrom = null, DateTime? dueDateTo = null, ManagedInvoiceSearchStatusType managedInvoiceSearchStatusType = ManagedInvoiceSearchStatusType.Open, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
-            // verify the required parameter 'postTransactionRequestModel' is set
-            if (postTransactionRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postTransactionRequestModel' when calling TransactionsApi->TransactionsPost");
-
-            var localVarPath = "/api/v2/Transactions";
-            var localVarPathParams = new Dictionary<String, String>();
-            var localVarQueryParams = new Dictionary<String, String>();
-            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
-            var localVarFormParams = new Dictionary<String, String>();
-            var localVarFileParams = new Dictionary<String, FileParameter>();
-            Object localVarPostBody = null;
-
-            // to determine the Content-Type header
-            String[] localVarHttpContentTypes = new String[] {
-                "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded"
-            };
-            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
-
-            // to determine the Accept header
-            String[] localVarHttpHeaderAccepts = new String[] {
-                "application/json", "text/json", "application/xml", "text/xml"
-            };
-            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
-            if (localVarHttpHeaderAccept != null)
-                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
-
-            // set "format" to json by default
-            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
-            localVarPathParams.Add("format", "json");
-
-            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
-
-            if (postTransactionRequestModel.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = Configuration.ApiClient.Serialize(postTransactionRequestModel); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = postTransactionRequestModel; // byte array
-            }
-
-            // make the HTTP request
-            RestResponse localVarResponse = (RestResponse)Configuration.ApiClient.CallApi(localVarPath,
-                Method.Post, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
-                localVarPathParams, localVarHttpContentType);
-
-            int localVarStatusCode = (int)localVarResponse.StatusCode;
-
-            if (localVarStatusCode == 400)
-            {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostTransactionResponseModel>(localVarResponse.Content);
-            }
-            else if (localVarStatusCode >= 400)
-            {
-                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
-
-                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
-            }
-            else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
-
-            var id = localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
-
-            return new PostTransactionResponseModel
-            {
-                Id = long.Parse(id),
-                PaymentResponseCode = PaymentResponseCode.Success
-            };
-        }
-
-        public GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, long? batchId = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
-        {
-            var localVarPath = "/api/v2/transactions";
+            var localVarPath = "/api/v2/managedInvoices";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -211,13 +180,12 @@ namespace epay3.Web.Api.Sdk.V2.Api
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
+            localVarQueryParams.Add("managedInvoiceSearchStatusType", Configuration.ApiClient.ParameterToString(managedInvoiceSearchStatusType));
 
-            if (beginDate != null) localVarQueryParams.Add("beginDate", Configuration.ApiClient.ParameterToString(beginDate)); // query parameter
-            if (endDate != null) localVarQueryParams.Add("endDate", Configuration.ApiClient.ParameterToString(endDate)); // query parameter
-            if (transactionSearchTypeId != null) localVarQueryParams.Add("transactionSearchTypeId", Configuration.ApiClient.ParameterToString(transactionSearchTypeId)); // query parameter
-            if (minAmount != null) localVarQueryParams.Add("minAmount", Configuration.ApiClient.ParameterToString(minAmount)); // query parameter
-            if (maxAmount != null) localVarQueryParams.Add("maxAmount", Configuration.ApiClient.ParameterToString(maxAmount)); // query parameter
-            if (batchId != null) localVarQueryParams.Add("batchId", Configuration.ApiClient.ParameterToString(batchId)); // query parameter
+            if (payerName != null) localVarQueryParams.Add("payerName", Configuration.ApiClient.ParameterToString(payerName)); // query parameter
+            if (createdBy != null) localVarQueryParams.Add("createdBy", Configuration.ApiClient.ParameterToString(createdBy)); // query parameter
+            if (dueDateFrom != null) localVarQueryParams.Add("dueDateFrom", Configuration.ApiClient.ParameterToString(dueDateFrom)); // query parameter
+            if (dueDateTo != null) localVarQueryParams.Add("dueDateTo", Configuration.ApiClient.ParameterToString(dueDateTo)); // query parameter
             if (page != null) localVarQueryParams.Add("page", Configuration.ApiClient.ParameterToString(page)); // query parameter
             if (pageSize != null) localVarQueryParams.Add("pageSize", Configuration.ApiClient.ParameterToString(pageSize)); // query parameter
 
@@ -231,31 +199,27 @@ namespace epay3.Web.Api.Sdk.V2.Api
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
             if (localVarStatusCode >= 400)
-                throw new ApiException(localVarStatusCode, "Error calling TransactionsSearch: " + localVarResponse.Content, localVarResponse.Content);
+                throw new ApiException(localVarStatusCode, "Error calling ManagedInvoicesSearch: " + localVarResponse.Content, localVarResponse.Content);
             else if (localVarStatusCode == 0)
-                throw new ApiException(localVarStatusCode, "Error calling TransactionsSearch: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+                throw new ApiException(localVarStatusCode, "Error calling ManagedInvoicesSearch: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
             var headerDict = localVarResponse.Headers.GroupBy(x => x.Name).ToDictionary(g => g.Key, g => string.Join(", ", g.Select(x => x.Value?.ToString())));
 
-            return new ApiResponse<GetTransactionsResponseModel>(
+            return new ApiResponse<GetManagedInvoicesResponseModel>(
                 localVarStatusCode,
                 headerDict,
-                (GetTransactionsResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTransactionsResponseModel))
+                (GetManagedInvoicesResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetManagedInvoicesResponseModel))
             ).Data;
 
         }
 
-        public PostVoidTransactionResponseModel TransactionsVoid(long id, PostVoidTransactionRequestModel postVoidTransactionRequestModel, string impersonationAccountKey = null)
+        public PostVoidManagedInvoiceResponseModel ManagedInvoicesVoid(string id, string impersonationAccountKey = null)
         {
             // verify the required parameter 'id' is set
-            if (id <= 0)
-                throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsVoid");
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ManagedInvoicesApi->ManagedInvoicesVoid");
 
-            // verify the required parameter 'postVoidTransactionRequestModel' is set
-            if (postVoidTransactionRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postVoidTransactionRequestModel' when calling TransactionsApi->TransactionsVoid");
-
-            var localVarPath = string.Format("/api/v2/Transactions/{0}/void", id);
+            var localVarPath = "/api/v2/managedInvoices/{id}/void";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -281,17 +245,9 @@ namespace epay3.Web.Api.Sdk.V2.Api
             // set "format" to json by default
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
+            if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
 
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
-
-            if (postVoidTransactionRequestModel.GetType() != typeof(byte[]))
-            {
-                localVarPostBody = Configuration.ApiClient.Serialize(postVoidTransactionRequestModel); // http body (model) parameter
-            }
-            else
-            {
-                localVarPostBody = postVoidTransactionRequestModel; // byte array
-            }
 
             // make the HTTP request
             RestResponse localVarResponse = (RestResponse)Configuration.ApiClient.CallApi(localVarPath,
@@ -302,7 +258,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
             if (localVarStatusCode == 400)
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostVoidTransactionResponseModel>(localVarResponse.Content);
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostVoidManagedInvoiceResponseModel>(localVarResponse.Content);
             }
             else if (localVarStatusCode >= 400)
             {
@@ -311,23 +267,23 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
             }
 
-            return new PostVoidTransactionResponseModel
+            return new PostVoidManagedInvoiceResponseModel
             {
-                ReversalResponseCode = ReversalResponseCode.Success
+                VoidManagedInvoiceResponseCode = VoidManagedInvoiceResponseCode.Success
             };
         }
 
-        public PostRefundTransactionResponseModel TransactionsRefund(long id, PostRefundTransactionRequestModel postRefundTransactionRequestModel, string impersonationAccountKey = null)
+        /// <summary>
+        /// Creates Managed Invoice.
+        /// </summary>
+        /// <param name="postCreateManagedInvoicesRequestModel">The details of the Managed Invoice to be created. In the response, the Id of the created Managed Invoice is the last part of the URI in the location header attribute.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the managed invoice is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        public string ManagedInvoicesPost(PostCreateManagedInvoicesRequestModel postCreateManagedInvoicesRequestModel, string impersonationAccountKey = null)
         {
-            // verify the required parameter 'id' is set
-            if (id <= 0)
-                throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsRefund");
+            if (postCreateManagedInvoicesRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postCreateManagedInvoicesRequestModel' when calling ManagedInvoices Api->ManagedInvoicesPost");
 
-            // verify the required parameter 'postRefundTransactionRequestModel' is set
-            if (postRefundTransactionRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postRefundTransactionRequestModel' when calling TransactionsApi->TransactionsRefund");
-
-            var localVarPath = string.Format("/api/v2/Transactions/{0}/refund", id);
+            var localVarPath = "/api/v2/managedInvoices";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -345,7 +301,6 @@ namespace epay3.Web.Api.Sdk.V2.Api
             String[] localVarHttpHeaderAccepts = new String[] {
                 "application/json", "text/json", "application/xml", "text/xml"
             };
-
             String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
             if (localVarHttpHeaderAccept != null)
                 localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
@@ -356,13 +311,13 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
-            if (postRefundTransactionRequestModel.GetType() != typeof(byte[]))
+            if (postCreateManagedInvoicesRequestModel.GetType() != typeof(byte[]))
             {
-                localVarPostBody = Configuration.ApiClient.Serialize(postRefundTransactionRequestModel); // http body (model) parameter
+                localVarPostBody = Configuration.ApiClient.Serialize(postCreateManagedInvoicesRequestModel); // http body (model) parameter
             }
             else
             {
-                localVarPostBody = postRefundTransactionRequestModel; // byte array
+                localVarPostBody = postCreateManagedInvoicesRequestModel; // byte array
             }
 
             // make the HTTP request
@@ -374,7 +329,9 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
             if (localVarStatusCode == 400)
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<PostRefundTransactionResponseModel>(localVarResponse.Content);
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
             }
             else if (localVarStatusCode >= 400)
             {
@@ -382,21 +339,30 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
                 throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
             }
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
 
-            return new PostRefundTransactionResponseModel
-            {
-                Id = long.Parse(localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last()),
-                ReversalResponseCode = ReversalResponseCode.Success
-            };
+            return localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
+
         }
 
-        public string TransactionsAuthorize(PostAuthorizeTransactionRequestModel postAuthorizeTransactionRequestModel, string impersonationAccountKey = null)
+        /// <summary>
+        /// Creates Managed Invoice with Financing.
+        /// </summary>
+        /// <param name="id">The public id of the managed invoice to be edited.</param>
+        /// <param name="postCreateManagedInvoicesFinanceRequestModel">The details of the Quote/Invoice to be created. In the response, the Id of the created Quote/Invoice is the last part of the URI in the location header attribute.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the quote/invoice is being created. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        public string FinanceManagedInvoices(string id, PostCreateManagedInvoicesFinanceRequestModel postCreateManagedInvoicesFinanceRequestModel, string impersonationAccountKey = null)
         {
+            // verify the required parameter 'id' is set
+            if (id == null)
+                throw new ApiException(400, "Missing required parameter 'id' when calling ManagedInvoicesApi->FinanceManagedInvoices");
+                
             // verify the required parameter 'postTransactionRequestModel' is set
-            if (postAuthorizeTransactionRequestModel == null)
-                throw new ApiException(400, "Missing required parameter 'postAuthorizeTransactionRequestModel' when calling TransactionsApi->TransactionsAuthorize");
+            if (postCreateManagedInvoicesFinanceRequestModel == null)
+                throw new ApiException(400, "Missing required parameter 'postCreateManagedInvoicesFinanceRequestModel' when calling ManagedInvoicesApi->FinanceManagedInvoices");
 
-            var localVarPath = "/api/v2/Transactions/Authorize";
+            var localVarPath = "/api/v2/managedInvoices/{id}/finance";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -422,15 +388,17 @@ namespace epay3.Web.Api.Sdk.V2.Api
             // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
             localVarPathParams.Add("format", "json");
 
+            if (id != null) localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
+
             if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
 
-            if (postAuthorizeTransactionRequestModel.GetType() != typeof(byte[]))
+            if (postCreateManagedInvoicesFinanceRequestModel.GetType() != typeof(byte[]))
             {
-                localVarPostBody = Configuration.ApiClient.Serialize(postAuthorizeTransactionRequestModel); // http body (model) parameter
+                localVarPostBody = Configuration.ApiClient.Serialize(postCreateManagedInvoicesFinanceRequestModel); // http body (model) parameter
             }
             else
             {
-                localVarPostBody = postAuthorizeTransactionRequestModel; // byte array
+                localVarPostBody = postCreateManagedInvoicesFinanceRequestModel; // byte array
             }
 
             // make the HTTP request
@@ -440,7 +408,13 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
             int localVarStatusCode = (int)localVarResponse.StatusCode;
 
-            if (localVarStatusCode >= 400)
+            if (localVarStatusCode == 400)
+            {
+                var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
+
+                throw new ApiException(localVarStatusCode, errorResponseModel != null ? errorResponseModel.Message : null);
+            }
+            else if (localVarStatusCode >= 400)
             {
                 var errorResponseModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorResponseModel>(localVarResponse.Content);
 
@@ -451,5 +425,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
             return localVarResponse.Headers.First(x => x.Name == "Location").Value.ToString().Split('/').Last();
         }
+
     }
+
 }

@@ -12,6 +12,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
     public interface IBatchesApi
     {
         GetBatchesResponseModel BatchesGet (int? page = null, string impersonationAccountKey = null);
+        GetTransactionsResponseModel GetBatchTransactions(long id, string impersonationAccountKey = null);
     }
   
     public class BatchesApi : IBatchesApi
@@ -59,44 +60,12 @@ namespace epay3.Web.Api.Sdk.V2.Api
         {
             return this.Configuration.ApiClient.RestClient.Options.BaseUrl.ToString();
         }
-
-        /// <summary>
-        /// Sets the base path of the API client.
-        /// </summary>
-        /// <value>The base path</value>
-        [Obsolete("SetBasePath is deprecated, please do 'Configuraiton.ApiClient = new ApiClient(\"http://new-path\")' instead.")]
-        public void SetBasePath(String basePath)
-        {
-            // do nothing
-        }
-    
+  
         /// <summary>
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
         public Configuration Configuration {get; set;}
-
-        /// <summary>
-        /// Gets the default header.
-        /// </summary>
-        /// <returns>Dictionary of HTTP header</returns>
-        [Obsolete("DefaultHeader is deprecated, please use Configuration.DefaultHeader instead.")]
-        public Dictionary<String, String> DefaultHeader()
-        {
-            return this.Configuration.DefaultHeader;
-        }
-
-        /// <summary>
-        /// Add default header.
-        /// </summary>
-        /// <param name="key">Header field name.</param>
-        /// <param name="value">Header field value.</param>
-        /// <returns></returns>
-        [Obsolete("AddDefaultHeader is deprecated, please use Configuration.AddDefaultHeader instead.")]
-        public void AddDefaultHeader(string key, string value)
-        {
-            this.Configuration.AddDefaultHeader(key, value);
-        }
 
         /// <summary>
         /// Gets a collection of Batches. 
@@ -158,6 +127,69 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 localVarStatusCode,
                 headersDict,
                 (GetBatchesResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetBatchesResponseModel))
+            ).Data;
+        }
+
+        /// <summary>
+        /// Gets all the transactions of a given Batch.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="id">Batch ID.</param>
+        /// <param name="impersonationAccountKey">The key that allows impersonation of another account for which the batches were processed. Only specify a value if the account being impersonated is different from the account that is submitting this request.</param>
+        /// <returns></returns>
+        public GetTransactionsResponseModel GetBatchTransactions(long id, string impersonationAccountKey = null)
+        {
+            var localVarPath = "/api/v2/batches/{id}/transactions";
+
+            var localVarPathParams = new Dictionary<String, String>();
+            var localVarQueryParams = new Dictionary<String, String>();
+            var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
+            var localVarFormParams = new Dictionary<String, String>();
+            var localVarFileParams = new Dictionary<String, FileParameter>();
+            Object localVarPostBody = null;
+
+            // to determine the Content-Type header
+            String[] localVarHttpContentTypes = new String[] {
+
+            };
+            String localVarHttpContentType = Configuration.ApiClient.SelectHeaderContentType(localVarHttpContentTypes);
+
+            // to determine the Accept header
+            String[] localVarHttpHeaderAccepts = new String[] {
+                "application/json", "text/json", "application/xml", "text/xml"
+            };
+            String localVarHttpHeaderAccept = Configuration.ApiClient.SelectHeaderAccept(localVarHttpHeaderAccepts);
+            if (localVarHttpHeaderAccept != null)
+                localVarHeaderParams.Add("Accept", localVarHttpHeaderAccept);
+
+            // set "format" to json by default
+            // e.g. /pet/{petId}.{format} becomes /pet/{petId}.json
+            localVarPathParams.Add("format", "json");
+            localVarPathParams.Add("id", Configuration.ApiClient.ParameterToString(id)); // path parameter
+
+            if (impersonationAccountKey != null) localVarHeaderParams.Add("impersonationAccountKey", Configuration.ApiClient.ParameterToString(impersonationAccountKey)); // header parameter
+
+            // make the HTTP request
+            RestResponse localVarResponse = (RestResponse)Configuration.ApiClient.CallApi(localVarPath,
+                Method.Get, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarFileParams,
+                localVarPathParams, localVarHttpContentType);
+
+            int localVarStatusCode = (int)localVarResponse.StatusCode;
+
+            if (localVarStatusCode >= 400)
+                throw new ApiException(localVarStatusCode, "Error calling GetBatchTransactions: " + localVarResponse.Content, localVarResponse.Content);
+            else if (localVarStatusCode == 0)
+                throw new ApiException(localVarStatusCode, "Error calling GetBatchTransactions: " + localVarResponse.ErrorMessage, localVarResponse.ErrorMessage);
+
+
+            var headersDict = localVarResponse.Headers.GroupBy(x => x.Name).ToDictionary(g => g.Key,
+                g => string.Join(", ", g.Select(x => x.Value?.ToString() ?? string.Empty)));
+
+            return new ApiResponse<GetTransactionsResponseModel>(
+                localVarStatusCode,
+                headersDict,
+                (GetTransactionsResponseModel)Configuration.ApiClient.Deserialize(localVarResponse, typeof(GetTransactionsResponseModel))
             ).Data;
         }
     }
