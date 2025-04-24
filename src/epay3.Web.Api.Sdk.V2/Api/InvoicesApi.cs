@@ -102,7 +102,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         /// <returns></returns>
         public InvoicesResponseModel InvoicesGet(Dictionary<string,string> attributes, string impersonationAccountKey)
         { 
-            var localVarPath = "/api/v2/Invoices";
+            var localVarPath = "/api/v1/Invoices";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -174,7 +174,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         /// <returns></returns>
         public InvoicesResponseModel InvoicesGet(Dictionary<string, string> attributes)
         {
-            var localVarPath = "/api/v2/Invoices";
+            var localVarPath = "/api/v1/Invoices";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -251,7 +251,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 throw new ApiException(400, "Missing required parameter 'updateInvoicesRequestModel' when calling InvoicesApi->InvoicesUpdate");
 
 
-            var localVarPath = "/api/v2/Invoices/Payments";
+            var localVarPath = "/api/v1/Invoices/Payments";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();

@@ -76,7 +76,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         /// <returns>ApiResponse of Object(void)</returns>
         public GetBatchesResponseModel BatchesGet(int? page = null, string impersonationAccountKey = null)
         {
-            var localVarPath = "/api/v2/Batches";
+            var localVarPath = "/api/v1/Batches";
     
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();

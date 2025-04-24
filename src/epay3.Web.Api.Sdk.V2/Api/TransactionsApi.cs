@@ -57,7 +57,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling TransactionsApi->TransactionsGet");
 
-            var localVarPath = "/api/v2/transactions/{id}";
+            var localVarPath = "/api/v1/transactions/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -185,7 +185,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
         public GetTransactionsResponseModel TransactionsSearch(DateTime? beginDate = null, DateTime? endDate = null, TransactionSearchType? transactionSearchTypeId = null, decimal? minAmount = null, decimal? maxAmount = null, long? batchId = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
-            var localVarPath = "/api/v2/transactions";
+            var localVarPath = "/api/v1/transactions";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -255,7 +255,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postVoidTransactionRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postVoidTransactionRequestModel' when calling TransactionsApi->TransactionsVoid");
 
-            var localVarPath = string.Format("/api/v2/Transactions/{0}/void", id);
+            var localVarPath = string.Format("/api/v1/Transactions/{0}/void", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -327,7 +327,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postRefundTransactionRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postRefundTransactionRequestModel' when calling TransactionsApi->TransactionsRefund");
 
-            var localVarPath = string.Format("/api/v2/Transactions/{0}/refund", id);
+            var localVarPath = string.Format("/api/v1/Transactions/{0}/refund", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -396,7 +396,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postAuthorizeTransactionRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postAuthorizeTransactionRequestModel' when calling TransactionsApi->TransactionsAuthorize");
 
-            var localVarPath = "/api/v2/Transactions/Authorize";
+            var localVarPath = "/api/v1/Transactions/Authorize";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);

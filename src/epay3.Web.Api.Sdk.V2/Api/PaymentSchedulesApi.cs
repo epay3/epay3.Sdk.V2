@@ -119,7 +119,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling PaymentSchedulesApi->PaymentSchedulesCancel");
 
-            var localVarPath = string.Format("/api/v2/paymentSchedules/{0}/cancel", id);
+            var localVarPath = string.Format("/api/v1/paymentSchedules/{0}/cancel", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -185,7 +185,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling PaymentSchedulesApi->PaymentSchedulesGet");
 
-            var localVarPath = "/api/v2/paymentSchedules/{id}";
+            var localVarPath = "/api/v1/paymentSchedules/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -252,7 +252,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postPaymentScheduleRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postPaymentScheduleRequestModel' when calling PaymentSchedulesApi->PaymentSchedulesPost");
 
-            var localVarPath = "/api/v2/paymentSchedules";
+            var localVarPath = "/api/v1/paymentSchedules";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);

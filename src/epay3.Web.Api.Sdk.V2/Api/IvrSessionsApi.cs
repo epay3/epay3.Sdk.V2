@@ -94,7 +94,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
                 throw new ApiException(400, "Missing required parameter 'postIvrSessionRequestModel' when calling IvrSessionsApi->IvrSessionsPost");
             
     
-            var localVarPath = "/api/v2/ivrSessions";
+            var localVarPath = "/api/v1/ivrSessions";
     
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();

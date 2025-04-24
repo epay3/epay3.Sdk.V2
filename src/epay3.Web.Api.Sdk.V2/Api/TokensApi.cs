@@ -38,7 +38,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
 
         public bool TokensDelete(string id, string impersonationAccountKey = null)
         {
-            var localVarPath = string.Format("/api/v2/Tokens/{0}", id);
+            var localVarPath = string.Format("/api/v1/Tokens/{0}", id);
             var localVarPathParams = new Dictionary<string, string>
             {
                 { "format", "json" }
@@ -86,7 +86,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling TokensApi->TokensGet");
 
-            var localVarPath = "/api/v2/tokens/{id}";
+            var localVarPath = "/api/v1/tokens/{id}";
             var localVarPathParams = new Dictionary<string, string>
             {
                 { "format", "json" },
@@ -139,7 +139,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postTokenRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postTokenRequestModel' when calling TokensApi->TokensPost");
 
-            var localVarPath = "/api/v2/Tokens";
+            var localVarPath = "/api/v1/Tokens";
             var localVarPathParams = new Dictionary<string, string>
             {
                 { "format", "json" }

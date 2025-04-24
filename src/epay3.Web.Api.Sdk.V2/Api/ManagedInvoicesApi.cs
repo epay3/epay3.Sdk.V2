@@ -87,7 +87,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling ManagedInvoicesApi->ManagedInvoicesGet");
 
-            var localVarPath = "/api/v2/managedInvoices/{id}";
+            var localVarPath = "/api/v1/managedInvoices/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -154,7 +154,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         /// <returns></returns>
         public GetManagedInvoicesResponseModel ManagedInvoicesSearch(string payerName = null, string createdBy = null, DateTime? dueDateFrom = null, DateTime? dueDateTo = null, ManagedInvoiceSearchStatusType managedInvoiceSearchStatusType = ManagedInvoiceSearchStatusType.Open, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
-            var localVarPath = "/api/v2/managedInvoices";
+            var localVarPath = "/api/v1/managedInvoices";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -219,7 +219,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling ManagedInvoicesApi->ManagedInvoicesVoid");
 
-            var localVarPath = "/api/v2/managedInvoices/{id}/void";
+            var localVarPath = "/api/v1/managedInvoices/{id}/void";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -283,7 +283,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postCreateManagedInvoicesRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postCreateManagedInvoicesRequestModel' when calling ManagedInvoices Api->ManagedInvoicesPost");
 
-            var localVarPath = "/api/v2/managedInvoices";
+            var localVarPath = "/api/v1/managedInvoices";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -362,7 +362,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postCreateManagedInvoicesFinanceRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postCreateManagedInvoicesFinanceRequestModel' when calling ManagedInvoicesApi->FinanceManagedInvoices");
 
-            var localVarPath = "/api/v2/managedInvoices/{id}/finance";
+            var localVarPath = "/api/v1/managedInvoices/{id}/finance";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);

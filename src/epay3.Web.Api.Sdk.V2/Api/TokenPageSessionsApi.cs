@@ -89,7 +89,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postTokenPageSessionRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postTokenPageSessionRequestModel' when calling TokenPageSessionsApi->TokenPageSessionsPost");
 
-            var localVarPath = "/api/v2/TokenPageSessions";
+            var localVarPath = "/api/v1/TokenPageSessions";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);

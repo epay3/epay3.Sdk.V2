@@ -96,7 +96,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         public GetTransactionFeesResponseModel TransactionFeesGet (decimal amount, Dictionary<string, string> attributeValues = null, string impersonationAccountKey = null)
         {
             
-            var localVarPath = "/api/v2/transactionFees";
+            var localVarPath = "/api/v1/transactionFees";
     
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();

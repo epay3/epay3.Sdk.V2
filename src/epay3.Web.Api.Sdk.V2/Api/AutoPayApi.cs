@@ -113,7 +113,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayCancel");
 
-            var localVarPath = string.Format("/api/v2/autoPay/{0}/cancel", id);
+            var localVarPath = string.Format("/api/v1/autoPay/{0}/cancel", id);
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
@@ -179,7 +179,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (id == null)
                 throw new ApiException(400, "Missing required parameter 'id' when calling AutoPayApi->AutoPayGet");
 
-            var localVarPath = "/api/v2/autoPay/{id}";
+            var localVarPath = "/api/v1/autoPay/{id}";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -248,7 +248,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
         public GetAutoPaysResponseModel AutoPaySearch(DateTime? createDateStart = null, DateTime? createDateEnd = null, DateTime? cancelDateStart = null, DateTime? cancelDateEnd = null, short? page = null, byte? pageSize = null, string impersonationAccountKey = null)
         {
 
-            var localVarPath = "/api/v2/autoPays";
+            var localVarPath = "/api/v1/autoPays";
 
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
@@ -320,7 +320,7 @@ namespace epay3.Web.Api.Sdk.V2.Api
             if (postAutoPayRequestModel == null)
                 throw new ApiException(400, "Missing required parameter 'postAutoPayRequestModel' when calling AutoPay Api->AutoPayPost");
 
-            var localVarPath = "/api/v2/autoPay";
+            var localVarPath = "/api/v1/autoPay";
             var localVarPathParams = new Dictionary<String, String>();
             var localVarQueryParams = new Dictionary<String, String>();
             var localVarHeaderParams = new Dictionary<String, String>(Configuration.DefaultHeader);
