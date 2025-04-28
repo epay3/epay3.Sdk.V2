@@ -35,13 +35,14 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
                 CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -66,11 +67,12 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Ach()
         {
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal) subTotal,
                 BankAccountInformation = _testData.Ach2,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments"
@@ -98,14 +100,15 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         [TestMethod]
         public void Should_Honor_Impersonation_For_Transactions()
         {
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal) subTotal,
                 BankAccountInformation = _testData.Ach2,
                 Comments = "Sample comments",
-                InitiatingPartyFee = 100 * .20
+                InitiatingPartyFee = subTotal
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, _testData.ImpersonationAccountKey);
@@ -216,7 +219,7 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         {
             var postTokenRequestModel = new PostTokenRequestModel
             {
-                Payer = "John Doe",
+                Payer = "A T",
                 EmailAddress = "jdoe@example.com",
                 CreditCardInformation = _testData.Mastercard
             };
@@ -232,11 +235,12 @@ namespace epay3.Web.Api.V2.Tests.Processor7
 
             Assert.IsNotNull(authorizationId);
 
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
-                Payer = "John Smith",
+                Payer = "A T",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
                 AuthorizationId = authorizationId
             };
 
@@ -304,11 +308,12 @@ namespace epay3.Web.Api.V2.Tests.Processor7
 
             Assert.IsNotNull(authorizationId, _testData.ImpersonationAccountKey);
 
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
                 AuthorizationId = authorizationId
             };
 

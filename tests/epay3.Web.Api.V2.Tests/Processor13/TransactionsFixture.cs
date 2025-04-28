@@ -35,6 +35,7 @@ namespace epay3.Web.Api.V2.Tests.Processor13
         [TestMethod]
         public void Should_Successfully_Process_And_Void_Credit_Card()
         {
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
@@ -42,7 +43,7 @@ namespace epay3.Web.Api.V2.Tests.Processor13
                 CreditCardInformation = _testData.Mastercard,
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
@@ -101,11 +102,12 @@ namespace epay3.Web.Api.V2.Tests.Processor13
 
             Assert.IsNotNull(authorizationId);
 
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
                 AuthorizationId = authorizationId
             };
 
@@ -135,11 +137,12 @@ namespace epay3.Web.Api.V2.Tests.Processor13
 
             Assert.IsNotNull(authorizationId, _testData.ImpersonationAccountKey);
 
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
             var postTransactionRequestModel = new PostTransactionRequestModel
             {
                 Payer = "John Smith2",
                 EmailAddress = "jsmith@example.com",
-                SubTotal = 100,
+                SubTotal = (decimal)subTotal,
                 AuthorizationId = authorizationId
             };
 
