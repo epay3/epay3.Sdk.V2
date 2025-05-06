@@ -67,7 +67,7 @@ namespace epay3.Web.Api.V2.Tests
         [TestMethod]
         public void Should_Get_Batch_Transactions_Successfully_With_Impersonation_Key()
         {
-            var result = _batchesApi.GetBatchTransactions( 6176, _testData.ImpersonationAccountKey);
+            var result = _batchesApi.GetBatchTransactions(11520, _testData.ImpersonationAccountKey);
 
             // Should get successfully.
             Assert.AreEqual(1, result.Transactions.Count);
@@ -76,10 +76,10 @@ namespace epay3.Web.Api.V2.Tests
         [TestMethod]
         public void Should_Get_Batch_Transactions_Successfully_Without_Impersonation_Key()
         {
-            var result = _batchesApi.GetBatchTransactions(184, null);
+            var result = _batchesApi.GetBatchTransactions(15489, null);
 
             // Should get successfully.
-            Assert.AreEqual(1, result.Transactions.Count);
+            Assert.AreEqual(4, result.Transactions.Count);
         }
     }
 }
