@@ -24,7 +24,7 @@ jobs:
       id: get_version
       shell: pwsh
       run: |
-        $match = Get-Content -Path 'epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj' | Select-String -Pattern '<Version>(.*)</Version>'
+        $match = Get-Content -Path 'src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj' | Select-String -Pattern '<Version>(.*)</Version>'
         if ($match -and $match.Matches.Count -gt 0) {
           $version = $match.Matches[0].Groups[1].Value
           echo "base_version=$version" >> $env:GITHUB_OUTPUT
