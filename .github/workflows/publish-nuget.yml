@@ -38,7 +38,7 @@ jobs:
 
     - name: Pack NuGet package
       run: |
-        nuget pack epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj `
+        nuget pack src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj `
           -Properties Configuration=Release `
           -Version ${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
 
