@@ -37,7 +37,7 @@ jobs:
       run: msbuild epay3.Sdk.V2.sln /p:Configuration=Release
 
     - name: Pack NuGet package
-      run: dotnet pack src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj --configuration Release --output ./nupkg --version ${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
+      run: dotnet pack src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj --configuration Release --output ./nupkg -p:Version=${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
 
     - name: Authenticate with NuGet
       uses: NuGet/login@v1
