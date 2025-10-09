@@ -8,7 +8,7 @@ on:
 jobs:
   build_and_publish:
     runs-on: windows-2022
-    environment: production
+    environment: production  # Optional: only include if specified in your NuGet Trusted Publishing policy
 
     steps:
     - name: Checkout code
@@ -37,10 +37,7 @@ jobs:
       run: msbuild epay3.Sdk.V2.sln /p:Configuration=Release
 
     - name: Pack NuGet package
-      run: |
-        nuget pack src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj `
-          -Properties Configuration=Release `
-          -Version ${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
+      run: dotnet pack src\epay3.Web.Api.Sdk.V2\epay3.Web.Api.Sdk.V2.csproj --configuration Release --output ./nupkg --version ${{ steps.get_version.outputs.base_version }}.${{ github.run_number }}
 
     - name: Authenticate with NuGet
       uses: NuGet/login@v1
@@ -48,7 +45,7 @@ jobs:
 
     - name: Push to NuGet
       run: |
-        nuget push *.nupkg `
+        nuget push ./nupkg/*.nupkg `
           -Source https://api.nuget.org/v3/index.json `
           -ApiKey ${{ steps.nuget-login.outputs.NUGET_API_KEY }} `
           -SkipDuplicate
