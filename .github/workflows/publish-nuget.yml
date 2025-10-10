@@ -42,6 +42,8 @@ jobs:
     - name: Authenticate with NuGet
       uses: NuGet/login@v1
       id: nuget-login
+      with:
+        user: epay_arturo
 
     - name: Push to NuGet
       run: |
