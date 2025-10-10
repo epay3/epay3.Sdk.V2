@@ -51,7 +51,7 @@ jobs:
 
     - name: Push to NuGet
       run: |
-        nuget push ./nupkg/*.nupkg `
+        nuget push ./nupkg/**/*.nupkg `
           -Source https://api.nuget.org/v3/index.json `
           -ApiKey ${{ steps.nuget-login.outputs.NUGET_API_KEY }} `
           -SkipDuplicate
