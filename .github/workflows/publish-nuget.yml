@@ -50,11 +50,19 @@ jobs:
         user: epay_arturo
 
     - name: Push to NuGet
+      shell: pwsh
       run: |
-        nuget push ./nupkg/**/*.nupkg `
-          -Source https://api.nuget.org/v3/index.json `
-          -ApiKey ${{ steps.nuget-login.outputs.NUGET_API_KEY }} `
-          -SkipDuplicate
+        $packagePath = Get-ChildItem -Path ./nupkg -Recurse -Filter *.nupkg | Select-Object -ExpandProperty FullName
+        
+        if (-not $packagePath) {
+          Write-Error "Failed to find the package file in ./nupkg"
+          exit 1
+        }
+
+        dotnet nuget push $packagePath `
+          --source https://api.nuget.org/v3/index.json `
+          --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} `
+          --skip-duplicate
 
     - name: Create Git tag
       run: |
