@@ -44,6 +44,7 @@ namespace epay3.Web.Api.V2.Tests.Processor13
                 AttributeValues = new System.Collections.Generic.Dictionary<string, string> { { "phoneNumber", "512-234-1233" }, { "agentCode", "213498" } },
                 Comments = "Sample comments",
                 SubTotal = (decimal)subTotal,
+                AdditionalEpayPolicyRetainedFee = subTotal * .05
             };
 
             var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);

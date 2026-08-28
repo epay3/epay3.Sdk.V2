@@ -65,6 +65,32 @@ namespace epay3.Web.Api.V2.Tests.Processor7
         }
 
         [TestMethod]
+        public void Should_Successfully_Process_With_AdditionalEpayPolicyRetainedFee()
+        {
+            var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
+            var postTransactionRequestModel = new PostTransactionRequestModel
+            {
+                Payer = "John Smith",
+                EmailAddress = "jsmith@example.com",
+                SubTotal = (decimal)subTotal,
+                CreditCardInformation = _testData.Mastercard,
+                Comments = "Sample comments",
+                AdditionalEpayPolicyRetainedFee = subTotal * .05
+            };
+
+            var response = _transactionsApi.TransactionsPost(postTransactionRequestModel, null);
+
+            // Should return a valid Id.
+            Assert.IsTrue(response.Id > 0);
+            Assert.AreEqual(PaymentResponseCode.Success, response.PaymentResponseCode);
+
+            var getTransactionResponseModel = _transactionsApi.TransactionsGet(response.Id.Value);
+
+            Assert.IsNotNull(getTransactionResponseModel);
+            Assert.IsNotNull(getTransactionResponseModel.Events.SingleOrDefault(x => x.EventType == EventType.Sale));
+        }
+
+        [TestMethod]
         public void Should_Successfully_Process_And_Void_Ach()
         {
             var subTotal = Math.Round(new Random().NextDouble() * 100, 2);
