@@ -288,7 +288,34 @@ namespace epay3.Web.Api.Sdk.V2.Models
         Report,
 
         [EnumMember(Value = "Batch")]
-        Batch
+        Batch,
+
+        [EnumMember(Value = "Rejected")]
+        Rejected,
+
+        [EnumMember(Value = "Settled")]
+        Settled,
+
+        [EnumMember(Value = "ChargebackReportDate")]
+        ChargebackReportDate,
+
+        [EnumMember(Value = "LockboxException")]
+        LockboxException,
+
+        [EnumMember(Value = "OffPlatform")]
+        OffPlatform,
+
+        [EnumMember(Value = "RefundReject")]
+        RefundReject,
+
+        [EnumMember(Value = "Fraud")]
+        Fraud,
+
+        [EnumMember(Value = "ReturnReported")]
+        ReturnReported,
+
+        [EnumMember(Value = "Processing")]
+        Processing
     }
 
     /// <summary>
